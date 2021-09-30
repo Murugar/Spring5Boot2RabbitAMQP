@@ -23,18 +23,24 @@ public class CustomMessageSender {
     
     @Scheduled(fixedDelay = 1000L)
     public void sendMessage1() {
-        final CustomMessage message = new CustomMessage("Greetings from Spring Boot AMQP!", new Random().nextInt(50), false);
+        final CustomMessage message = new CustomMessage();
+        
+        message.setText("Greetings from Spring Boot AMQP!");
+        message.setPriority(new Random().nextInt(50));
+        message.setSecret(false);
+        		
         log.info("Sending Message using Rabbit...");
         rabbitTemplate.convertAndSend(MessagingApplication.EXCHANGE_NAME, MessagingApplication.ROUTING_KEY, message);
         
     }
     
+    /*
     @Scheduled(fixedDelay = 1000L)
     public void sendMessage() {
         log.info("Sending Ordinary Message using Rabbit...");
         Message m = new Message("Greeting AMQP".getBytes(), new MessageProperties());
         rabbitTemplate.send(MessagingApplication.EXCHANGE_NAME, MessagingApplication.ROUTING_KEY,m);
         
-    }
+    }*/
     
 }
